@@ -223,6 +223,12 @@ export const UpcomingBillingCycle = () => {
 
   const due_date = upcomingInvoice?.due_date || upcomingInvoice?.period_end_at;
 
+  const showSwitchCycleBtn =
+    switchablePlan &&
+    !activeSubscription?.phases?.some(
+      phase => phase.plan_id === switchablePlan.id
+    );
+
   return isLoading ? (
     <Skeleton />
   ) : due_date ? (
@@ -234,7 +240,9 @@ export const UpcomingBillingCycle = () => {
     >
       <Flex gap="medium" align={'center'}>
         <LabeledBillingData label="Plan" value={planName} />
-        {switchablePlan ? <PlanSwitchButton nextPlan={switchablePlan} /> : null}
+        {showSwitchCycleBtn ? (
+          <PlanSwitchButton nextPlan={switchablePlan} />
+        ) : null}
       </Flex>
       <Flex gap="medium">
         <LabeledBillingData
